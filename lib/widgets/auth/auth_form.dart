@@ -4,7 +4,9 @@ class AuthForm extends StatefulWidget {
   final void Function(String email, String password, String login, bool isLogin,
       BuildContext ctx) onSubmit;
 
-  AuthForm(this.onSubmit);
+  final bool isLoading;
+
+  AuthForm(this.onSubmit, this.isLoading);
 
   @override
   _AuthFormState createState() => _AuthFormState();
@@ -22,7 +24,8 @@ class _AuthFormState extends State<AuthForm> {
       FocusScope.of(context).unfocus();
       _formKey.currentState.save();
 
-      widget.onSubmit(_userEmail.trim(), _userPassword, _userName, _isLogin, context);
+      widget.onSubmit(
+          _userEmail.trim(), _userPassword, _userName, _isLogin, context);
 
       //Send requqest
     }
@@ -88,19 +91,22 @@ class _AuthFormState extends State<AuthForm> {
                   SizedBox(
                     height: 12,
                   ),
-                  RaisedButton(
-                    child: Text(_isLogin ? 'Login' : 'Signup'),
-                    onPressed: _trySubmit,
-                  ),
-                  FlatButton(
-                      onPressed: () {
-                        setState(() {
-                          _isLogin = !_isLogin;
-                        });
-                      },
-                      child: Text(
-                          _isLogin ? 'Create new account' : 'Login instead'),
-                      textColor: Theme.of(context).primaryColor),
+                  if (widget.isLoading) CircularProgressIndicator(),
+                  if (!widget.isLoading)
+                    RaisedButton(
+                      child: Text(_isLogin ? 'Login' : 'Signup'),
+                      onPressed: _trySubmit,
+                    ),
+                  if (!widget.isLoading)
+                    FlatButton(
+                        onPressed: () {
+                          setState(() {
+                            _isLogin = !_isLogin;
+                          });
+                        },
+                        child: Text(
+                            _isLogin ? 'Create new account' : 'Login instead'),
+                        textColor: Theme.of(context).primaryColor),
                 ],
               ),
             ),
