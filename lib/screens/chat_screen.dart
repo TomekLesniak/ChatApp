@@ -22,7 +22,7 @@ class _ChatScreenState extends State<ChatScreen> {
     }, onResume: (message) {
       print(message);
       return;
-    } );
+    });
     super.initState();
   }
 
@@ -33,6 +33,7 @@ class _ChatScreenState extends State<ChatScreen> {
         title: Text('chat'),
         actions: [
           DropdownButton(
+              underline: Container(),
               icon: Icon(Icons.more_vert,
                   color: Theme.of(context).primaryIconTheme.color),
               items: [
